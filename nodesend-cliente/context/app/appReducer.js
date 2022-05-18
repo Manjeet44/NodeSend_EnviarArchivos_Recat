@@ -4,7 +4,7 @@ import {
     SUBIR_ARCHIVO_EXITO,
     SUBIR_ARCHIVO_ERROR,
     CREAR_ENLACE_EXITO,
-    REAR_ENLACE_ERROR,
+    CREAR_ENLACE_ERROR,
     SUBIR_ARCHIVO
 
 } from '../../types';
@@ -38,6 +38,11 @@ export default (state, action) => {
             return {
                 ...state,
                 cargando: true
+            }
+        case CREAR_ENLACE_EXITO:
+            return {
+                ...state,
+                url: action.payload
             }
         default:
             return state

@@ -7,7 +7,7 @@ import {
     SUBIR_ARCHIVO_EXITO,
     SUBIR_ARCHIVO_ERROR,
     CREAR_ENLACE_EXITO,
-    REAR_ENLACE_ERROR,
+    CREAR_ENLACE_ERROR,
     SUBIR_ARCHIVO
 
 } from '../../types';
@@ -19,7 +19,11 @@ const AppState = ({children}) => {
         mensaje_archivo: null,
         nombre: '',
         nombre_original: '',
-        cargando: null
+        cargando: null,
+        descargas: 1,
+        password: '',
+        autor: null,
+        url: ''
     }
 
     //Crar dispatch y state
@@ -60,6 +64,31 @@ const AppState = ({children}) => {
             })
         }
     }
+
+    //Crear un enlace una vez que se subio un archivo
+    const crearEnlace = async () => {
+
+        const data = {
+            nombre: state.nombre,
+            nombre_original: state.nombre_original,
+            descargas: state.descargas,
+            password: state.password,
+            autor: state.autor
+        }
+        console.log(data)
+
+        try {
+            const resultado = await clienteAxios.post('/api/enlaces', data);
+            dispatch({
+                type: CREAR_ENLACE_EXITO,
+                payload: resultado.data.msg
+            })
+            console.log(resultado.data.msg);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
     return (
         <appContext.Provider
             value={{
@@ -67,8 +96,13 @@ const AppState = ({children}) => {
                 nombre: state.nombre,
                 nombre_orginal: state.nombre_original,
                 cargando: state.cargando,
+                descargas: state.descargas,
+                password: state.password,
+                autor: state.autor,
+                url: state.url,
                 mostrarAlerta,
-                subirArchivo
+                subirArchivo,
+                crearEnlace
             }}
         >
             {children}
